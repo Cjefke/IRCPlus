@@ -14,3 +14,11 @@ on *:TEXT:*:#:{
     kick # $nick Spam detected
   }
 }
+
+on *:JOIN:#:{
+  set %host $gettok($address($nick,2),2,33)
+  if ($readini(bans.ini,bans, $+ %host $+ ) == 1) && ($me isop #) {
+    mode # +b $gettok($address($nick,2),2,33)
+    kick # $nick Spam Host Detected
+  }
+}
