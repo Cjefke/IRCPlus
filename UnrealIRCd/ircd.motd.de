@@ -1,0 +1,107 @@
+     _____ _       _           _      _____ _____   _____
+  / ____| |     | |         | |    |_   _|  __ \ / ____|
+ | |  __| | ___ | |__   __ _| |______| | | |__) | |
+ | | |_ | |/ _ \| '_ \ / _` | |______| | |  _  /| |
+ | |__| | | (_) | |_) | (_| | |     _| |_| | \ \| |____
+  \_____|_|\___/|_.__/ \__,_|_|    |_____|_|  \_\\_____|
+
+                    Global-IRC Netzwerk
+
+======================================================================
+
+ Willkommen bei Global-IRC
+
+ Ein Community-Netzwerk für IRC-Enthusiasten, Linux-Nutzer,
+ Entwickler, Gamer und Technikbegeisterte aus aller Welt.
+
+======================================================================
+ NETZWERKREGELN
+======================================================================
+
+  • Kein Spam
+  • Kein Flood
+  • Keine Klone
+  • Keine DoS-Bots
+  • Keine Kanalübernahmen
+  • Respektiere andere Benutzer
+  • Freundliche Bots sind erlaubt
+  • Maximal 5 Verbindungen pro IP-Adresse
+
+======================================================================
+ IRC-DIENSTE
+======================================================================
+
+ Nickname registrieren:
+     /msg NickServ HELP
+
+ Kanalverwaltung:
+     /msg ChanServ HELP
+
+ Nützliche Befehle:
+
+     /msg NickServ REGISTER
+     /msg NickServ IDENTIFY
+     /msg ChanServ REGISTER #kanale
+
+======================================================================
+ VERBINDUNGSINFORMATIONEN
+======================================================================
+
+ Standard IRC-Ports    : 6667 - 6669
+ SSL/TLS-poort         : 6697
+
+======================================================================
+ EMPFOHLENE KANÄLE
+======================================================================
+
+ #Portal          - Hauptkanal Niederländisch
+ #ChatArea        - Hauptkanal Englisch
+ #IRCPlus         - IRC & Netzwerke
+ #Eggdrop         - EEggdrop Bot-Entwicklung
+ #Linux           - Linux & Open Source
+ #WolfensteinET   - Wolfenstein: Enemy Territory
+ #Formula1        - Formel-1 Diskussion
+ #DuckHunt        - IRC Spiele
+ #Texas-Holdem    - Texas Hold'em Poker
+ #Walhalla        - Mythologie & Community
+ #IdleRPG         - Idle RPG Abenteuer
+
+======================================================================
+ HILFE & SUPPORT
+======================================================================
+
+ Benötigst du Hilfe?
+
+ Beitreten:
+     #Help
+
+ Online-IRC-Operatoren anzeigen:
+     /who o-S m
+
+======================================================================
+ NETZWERKTEAM
+======================================================================
+
+ Serveradministrator : Ophidian
+ Serveradministrator : Syn0pS1s
+ Serveradministrator : Lowerland
+ Serveradministrator : Cjefke
+
+ E-mail  : info@global-irc.eu
+ Website : https://www.global-irc.eu
+
+======================================================================
+ HAFTUNGSAUSSCHLUSS
+======================================================================
+
+ Global-IRC, sein Team und die Hosting-Anbieter
+ sind nicht verantwortlich für Inhalte, die von Benutzern übertragen werden.
+
+ Der Zugang zu diesem Netzwerk ist ein Privileg
+ und kann jederzeit von den Netzwerkadministratoren widerrufen werden.
+
+======================================================================
+
+        Vielen Dank, dass Sie sich für das Global-IRC-Netzwerk entschieden haben.
+
+======================================================================
