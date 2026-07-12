@@ -12,14 +12,14 @@
 
 Welkom bij de officiële GitHub repository van **IRCPlus.nl**.
 
-IRCPlus.nl is een Nederlandse IRC-community en IRC netwerk voor iedereen die de oude charme van IRC wil combineren met moderne scripts, bots en automatisering.
+IRCPlus.nl is een Nederlandse IRC-community en IRC netwerk gericht op het behouden van de klassieke IRC ervaring, gecombineerd met moderne scripts, bots en automatisering.
 
 🌐 Website: **https://IRCPlus.nl**
 💬 IRC Server: **irc.IRCPlus.nl**
 
-Deze repository bevat verschillende projecten die gebruikt worden binnen IRCPlus.nl, maar ook beschikbaar zijn voor andere IRC gebruikers die graag hun eigen IRC omgeving willen uitbreiden.
+Deze repository bevat projecten die ontwikkeld worden voor het IRCPlus.nl netwerk, maar ook beschikbaar zijn voor andere IRC gebruikers, beheerders en liefhebbers.
 
-Van mIRC scripts en Eggdrop TCL scripts tot Python IRC bots: alles wat met IRC automatisering, beheer en plezier te maken heeft komt hier samen.
+Van **mIRC scripts**, **Eggdrop TCL scripts** tot **Python IRC bots**: hier worden tools verzameld voor IRC beheer, automatisering, informatie en plezier.
 
 ---
 
@@ -34,11 +34,15 @@ IRCPlus
 │   │   ├── 8ball.mrc
 │   │   ├── chanbot.mrc
 │   │   ├── chanstats.mrc
+│   │   ├── cjefke.mrc
 │   │   ├── clonescan.mrc
+│   │   ├── control.mrc
+│   │   ├── dns.mrc
+│   │   ├── ipinfo.mrc
 │   │   ├── netsplit.mrc
 │   │   ├── status tools
 │   │   ├── Fun & Games
-│   │   └── Various IRC utilities
+│   │   └── IRC utilities
 │   │
 │   └── info.txt
 │
@@ -59,13 +63,7 @@ IRCPlus
 │   │
 │   ├── chanbot.py
 │   ├── pybots.py
-│   └── Future Python IRC bots
-│
-│
-├── UnrealIRCd
-│   ├── Configs
-│   ├── Modules
-│   └── Scripts
+│   └── Future IRC bot projects
 │
 │
 └── Documentation
@@ -78,101 +76,122 @@ IRCPlus
 
 # 💻 mIRC Scripts
 
-De mIRC scripts in deze repository zijn voornamelijk geschreven voor IRC gebruikers, kanaalbeheerders en IRC liefhebbers.
+De mIRC scripts in deze repository zijn gemaakt voor IRC gebruikers, kanaalbeheerders en liefhebbers.
+
+De scripts richten zich onder andere op:
+
+* IRC kanaalbeheer
+* Informatie tools
+* Automatisering
+* Moderatie
+* Fun & games
+* Netwerk monitoring
 
 Voorbeelden:
 
-* 🎱 **8ball.mrc**
-  Nederlands 8-ball script voor vragen en antwoorden.
+### 🎱 8ball.mrc
 
-* 🤖 **chanbot.mrc**
-  IRC bot functionaliteit voor mIRC.
+Nederlands 8-ball script voor vragen en antwoorden.
 
-* 📊 **chanstats.mrc**
-  Kanaalstatistieken en gebruikersinformatie.
+### 🤖 chanbot.mrc
 
-* 🕵️ **clonescan.mrc**
-  Clone detectie en IRC beveiliging.
+Basis IRC bot functionaliteit voor mIRC.
 
-* 🌐 **dns.mrc**
-  DNS lookup functies.
+### 📊 chanstats.mrc
 
-* 📡 **ipinfo.mrc**
-  IP informatie ophalen.
+Kanaalstatistieken en gebruikersinformatie.
 
-* ⚡ **netsplit.mrc**
-  Netsplit detectie voor IRC netwerken.
+### 🕵️ clonescan.mrc
 
-* 🌤️ **weer.mrc**
-  Weersinformatie via API.
+Clone detectie en IRC beveiliging.
 
-* 🎮 **karma-games.mrc**
-  Fun en games voor IRC kanalen.
+### 🌐 dns.mrc
 
-* 🏖️ **vakantie.mrc**
-  Nederlandse schoolvakanties informatie.
+DNS lookup functies.
 
-* 🎂 **verjaardag.mrc**
-  Verjaardag scripts voor IRC.
+### 📡 ipinfo.mrc
 
-En nog veel meer scripts voor dagelijks IRC gebruik.
+IP informatie ophalen.
+
+### ⚡ netsplit.mrc
+
+Detectie en meldingen bij IRC netsplits.
+
+### 📊 status scripts
+
+Systeem- en IRC statusinformatie.
+
+### 🎮 karma-games.mrc
+
+Functies en games voor IRC kanalen.
+
+### 🌤️ weer.mrc
+
+Weersinformatie via API.
+
+### 🏖️ vakantie.mrc
+
+Nederlandse schoolvakantie informatie.
+
+### 🎂 verjaardag.mrc
+
+Verjaardag scripts voor IRC.
 
 ---
 
 # 🥚 Eggdrop TCL Scripts
 
-Binnen IRCPlus.nl gebruiken we ook Eggdrop bots.
+IRCPlus.nl gebruikt ook Eggdrop bots voor automatisering en kanaalbeheer.
 
-Deze map bevat TCL scripts voor:
+De Eggdrop map bevat TCL scripts voor:
 
-* IRC kanaalbeheer
-* Statistieken
-* Automatisering
 * Status updates
-* Moderatie
-* Extra bot functionaliteit
+* Automatisering
+* IRC kanaalbeheer
+* NickServ identificatie
+* Extra bot functies
+* Integraties
 
-Voorbeelden:
+Huidige voorbeelden:
 
+```text
+Eggdrop
+│
+├── TCL's
+│   ├── localai.tcl
+│   ├── nickserv.tcl
+│   └── status.tcl
+│
+└── eggdrop.conf
 ```
-Eggdrop/
- ├── TCL/
- │    └── status.tcl
- │
- └── eggdrop.conf
-```
 
-De voorbeeld configuraties zijn bedoeld als basis voor nieuwe Eggdrop installaties.
+De `eggdrop.conf` is een voorbeeldconfiguratie om snel een nieuwe Eggdrop installatie op te zetten.
 
-Let op:
-Pas altijd usernames, passwords, hosts en kanaalinstellingen aan voordat je deze gebruikt.
+Pas altijd wachtwoorden, hosts, gebruikersnamen en kanaalinstellingen aan voordat je een configuratie gebruikt.
 
 ---
 
 # 🐍 Python IRC Bots
 
-Binnenkort worden hier verschillende Python IRC bots toegevoegd.
+Naast mIRC en Eggdrop worden er ook Python IRC bots ontwikkeld.
 
-Voorbeelden van toekomstige projecten:
+De Python map bevat momenteel:
 
-```
-Bots/
-└── Python/
-    ├── RSS Bots
-    ├── Information Bots
-    ├── Game Bots
-    ├── Monitoring Bots
-    └── IRC Utilities
+```text
+Python
+│
+├── chanbot.py
+└── pybots.py
 ```
 
-Mogelijke functies:
+Toekomstige projecten:
 
-* Nieuws/RSS feeds
-* Server informatie
-* IRC statistieken
-* Games
+* RSS bots
+* Informatie bots
+* IRC monitoring bots
+* Game bots
+* API integraties
 * Automatische meldingen
-* API koppelingen
 * IRC beheer tools
 
 ---
@@ -181,20 +200,19 @@ Mogelijke functies:
 
 IRCPlus.nl draait op:
 
-```
-Server:
+```text
 irc.IRCPlus.nl
 ```
 
-IRCPlus.nl probeert de IRC ervaring van vroeger te behouden:
+Het doel van IRCPlus.nl:
 
-* ✔ Gezellige Nederlandse IRC community
-* ✔ Eigen IRC netwerk
-* ✔ Moderne UnrealIRCd omgeving
-* ✔ Bots en automatisering
-* ✔ Scripts voor mIRC, Eggdrop en Python
+* ✔ IRC levend houden
+* ✔ Een Nederlandse IRC community bouwen
+* ✔ Moderne IRC tools ontwikkelen
+* ✔ Scripts en bots delen
+* ✔ Kennis over IRC behouden
 
-IRC is misschien ouderwets, maar de community en mogelijkheden blijven bestaan.
+IRC bestaat al tientallen jaren, maar dankzij communities, scripts en bots blijft IRC nog steeds een krachtig platform.
 
 ---
 
@@ -204,17 +222,15 @@ Heb je verbeteringen, ideeën of eigen IRC scripts?
 
 Pull requests en suggesties zijn welkom.
 
-Iedereen die IRC een warm hart toedraagt mag bijdragen.
+Iedereen die IRC een warm hart toedraagt kan bijdragen aan de verdere ontwikkeling van IRCPlus.nl.
 
 ---
 
 # 📜 Licentie
 
-Gebruik, pas aan en leer ervan.
+Gebruik, pas aan en leer van deze projecten.
 
-Respecteer altijd de originele makers van scripts en geef credits wanneer nodig.
-
----
+Respecteer altijd originele auteurs en behoud credits wanneer nodig.
 
 ---
 
@@ -227,27 +243,34 @@ IRCPlus.nl is a Dutch IRC community and IRC network focused on keeping the class
 🌐 Website: **https://IRCPlus.nl**
 💬 IRC Server: **irc.IRCPlus.nl**
 
-This repository contains mIRC scripts, Eggdrop TCL scripts and Python IRC bots created for IRCPlus.nl and other IRC enthusiasts.
+This repository contains projects developed for the IRCPlus.nl network, but also available for IRC users, administrators and enthusiasts.
+
+From **mIRC scripts**, **Eggdrop TCL scripts** to **Python IRC bots**: this repository contains tools for IRC management, automation, information and fun.
 
 ---
 
 # 📁 Repository structure
 
-```
+```text
 IRCPlus
 │
 ├── mIRC
 │   ├── Scripts
-│   └── Downloads
+│   │   └── mIRC scripts and IRC utilities
+│   │
+│   └── info.txt
 │
 ├── Eggdrop
-│   ├── TCL
-│   ├── Configs
-│   └── Downloads
+│   ├── TCL's
+│   │   ├── localai.tcl
+│   │   ├── nickserv.tcl
+│   │   └── status.tcl
+│   │
+│   └── eggdrop.conf
 │
-├── Bots
-│   ├── Python
-│   └── Other
+├── Python
+│   ├── chanbot.py
+│   └── pybots.py
 │
 └── Documentation
 ```
@@ -256,19 +279,19 @@ IRCPlus
 
 # 💻 mIRC Scripts
 
-This repository contains many mIRC scripts for IRC users and administrators.
+This repository contains mIRC scripts for IRC users, channel owners and administrators.
 
-Examples:
+Features include:
 
 * Channel management
 * IRC utilities
+* Automation
+* Security tools
 * Fun commands
 * Games
-* Information tools
 * Network monitoring
-* Security scripts
 
-Current scripts include:
+Examples:
 
 * 8ball.mrc
 * ChanBot.mrc
@@ -286,13 +309,13 @@ Current scripts include:
 
 # 🥚 Eggdrop TCL Scripts
 
-Eggdrop scripts for IRC bots and channel automation.
+Eggdrop TCL scripts for IRC bots and channel automation.
 
 Includes:
 
 * Status systems
+* NickServ authentication
 * Channel utilities
-* Moderation tools
 * Automation scripts
 * Example configurations
 
@@ -300,14 +323,25 @@ Includes:
 
 # 🐍 Python IRC Bots
 
-Future Python projects will include:
+Python based IRC bots and tools.
+
+Current projects:
+
+```text
+Python
+│
+├── chanbot.py
+└── pybots.py
+```
+
+Future projects:
 
 * RSS bots
 * Information bots
 * Game bots
 * Monitoring bots
-* IRC utilities
 * API integrations
+* IRC utilities
 
 ---
 
@@ -315,18 +349,18 @@ Future Python projects will include:
 
 IRCPlus.nl runs its own IRC network:
 
-```
+```text
 irc.IRCPlus.nl
 ```
 
-The goal:
+The mission:
 
 * Keep IRC alive
-* Build useful IRC tools
 * Share knowledge
-* Create scripts and bots for the community
+* Create useful IRC tools
+* Build scripts and bots for the community
 
-IRC may be an old technology, but it still has an amazing community.
+IRC may be an old technology, but the community and possibilities are still alive.
 
 ---
 
