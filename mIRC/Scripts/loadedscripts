@@ -1,0 +1,19 @@
+; Loaded Scripts v1.0 - by entropy 2018
+
+on *:text:!scripts:#:{ scripts $1- }
+
+alias -l scripts {
+  if (?scripts iswm $1 && $left($1,1) isin @!.) {
+    var %a = 1, %b, %loaded = 0, %size = 0, %lines = 0
+    while ($script(%a)) {
+      %b = $v1
+      inc %loaded
+      inc %size $file($qt(%b)).size
+      inc %lines $lines($qt(%b))
+      inc %a
+    }
+    if (%loaded) {
+      msg # Scripts: %loaded $chr(9679) Size: $bytes(%size).suf $chr(9679) Lines: $bytes(%lines,b)
+    }
+  }
+}
