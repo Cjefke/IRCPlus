@@ -1,0 +1,107 @@
+   _____ _       _           _      _____ _____   _____
+  / ____| |     | |         | |    |_   _|  __ \ / ____|
+ | |  __| | ___ | |__   __ _| |______| | | |__) | |
+ | | |_ | |/ _ \| '_ \ / _` | |______| | |  _  /| |
+ | |__| | | (_) | |_) | (_| | |     _| |_| | \ \| |____
+  \_____|_|\___/|_.__/ \__,_|_|    |_____|_|  \_\\_____|
+
+                    Global-IRC Network
+
+======================================================================
+
+ Welcome to Global-IRC
+
+ A community network for IRC enthusiasts, Linux users, developers,
+ gamers and technology minded people from around the world.
+
+======================================================================
+ NETWORK RULES
+======================================================================
+
+  • No spamming
+  • No flooding
+  • No clones
+  • No DoS bots
+  • No channel takeovers
+  • Respect other users
+  • Friendly bots are allowed
+  • Maximum 5 connections per IP address
+
+======================================================================
+ IRC SERVICES
+======================================================================
+
+ Nickname Registration:
+     /msg NickServ HELP
+
+ Channel Management:
+     /msg ChanServ HELP
+
+ Useful Commands:
+
+     /msg NickServ REGISTER
+     /msg NickServ IDENTIFY
+     /msg ChanServ REGISTER #channel
+
+======================================================================
+ CONNECTION INFORMATION
+======================================================================
+
+ Standard IRC Ports : 6667 - 6669
+ SSL/TLS Ports      : 6697
+
+======================================================================
+ FEATURED CHANNELS
+======================================================================
+
+ #Portal          - Main Dutch Channel
+ #ChatArea        - Main English Channel
+ #IRCPlus         - IRC & Networking
+ #Eggdrop         - Eggdrop Bot Development
+ #Linux           - Linux & Open Source
+ #WolfensteinET   - Wolfenstein: Enemy Territory
+ #Formula1        - Formula 1 Discussion
+ #DuckHunt        - IRC Gaming
+ #Texas-Holdem    - Texas Hold'em Poker
+ #Walhalla        - Mythology & Community
+ #IdleRPG         - Idle RPG Adventure
+
+======================================================================
+ HELP & SUPPORT
+======================================================================
+
+ Need assistance?
+
+ Join:
+     #Help
+
+ View online IRC Operators:
+     /who o-S m
+
+======================================================================
+ NETWORK STAFF
+======================================================================
+
+ Server Admin : Ophidian
+ Server Admin : Syn0pS1s
+ Server Admin : Lowerland
+ Server Admin : Cjefke
+
+ E-Mail  : info@global-irc.eu
+ Website : https://www.global-irc.eu
+
+======================================================================
+ DISCLAIMER
+======================================================================
+
+ Global-IRC, its staff and hosting providers are not responsible
+ for content transmitted by users.
+
+ Access to this network is a privilege and may be revoked at any
+ time by network administrators.
+
+======================================================================
+
+        Thank you for choosing Global-IRC Network
+
+======================================================================
