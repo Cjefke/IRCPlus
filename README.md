@@ -25,38 +25,53 @@ Van mIRC scripts en Eggdrop TCL scripts tot Python IRC bots: alles wat met IRC a
 
 # 📁 Project structuur
 
-```
+```text
 IRCPlus
 │
 ├── mIRC
-│   ├── Scripts
-│   │   ├── Channel scripts
-│   │   ├── Utility scripts
-│   │   ├── Fun & games
-│   │   ├── Information tools
-│   │   └── IRC management scripts
 │   │
-│   └── Downloads
+│   ├── Scripts
+│   │   ├── 8ball.mrc
+│   │   ├── chanbot.mrc
+│   │   ├── chanstats.mrc
+│   │   ├── clonescan.mrc
+│   │   ├── netsplit.mrc
+│   │   ├── status tools
+│   │   ├── Fun & Games
+│   │   └── Various IRC utilities
+│   │
+│   └── info.txt
+│
 │
 ├── Eggdrop
-│   ├── TCL
-│   │   └── Eggdrop scripts
 │   │
-│   ├── Configs
-│   │   └── Example configurations
+│   ├── TCL's
+│   │   ├── localai.tcl
+│   │   ├── nickserv.tcl
+│   │   ├── status.tcl
+│   │   └── Other Eggdrop TCL scripts
 │   │
-│   └── Downloads
+│   └── eggdrop.conf
+│       └── Example Eggdrop configuration
+│
 │
 ├── Python
-│   ├ Python Bots....
-│  
-│   
-│   
-│  
-│   
-│  
+│   │
+│   ├── chanbot.py
+│   ├── pybots.py
+│   └── Future Python IRC bots
+│
+│
+├── UnrealIRCd
+│   ├── Configs
+│   ├── Modules
+│   └── Scripts
+│
 │
 └── Documentation
+    ├── Tutorials
+    ├── Installation guides
+    └── IRC documentation
 ```
 
 ---
