@@ -7,60 +7,43 @@ on *:QUIT:{
 
   ; Vorm 1: *.net *.split
   if (*.net *.split iswm $1-) {
-    set %issplit 1
+    %issplit = 1
   }
 
-  ; Vorm 2: twee servers in quit message
-  ; voorbeeld: foxtrot.hub.dal.net paradigm.hub.dal.net
+  ; Vorm 2: twee servernamen in quit
   if ($numtok($1-,32) >= 2) {
     var %a = $gettok($1-,1,32)
     var %b = $gettok($1-,2,32)
 
-    ; Beide moeten op een server lijken (bevatten een punt)
-    if (*.* iswm %a) && (*.* iswm %b) {
-      set %issplit 1
+    if ((*.* iswm %a) && (*.* iswm %b)) {
+      %issplit = 1
     }
   }
 
-  ; Geen netsplit gevonden
   if (!%issplit) return
 
-
-  ; Alleen Global-Irc servers
-  if ($server !iswm *.global-irc.eu) return
-
-
-  ; Alleen als bot in #IRCPlus zit
+  ; Alleen in #IRCPlus
   if (!$me ison #IRCPlus) return
 
+  ; Nick onthouden
+  set -u120 %netsplit. $+ $nick 1
 
-  ; Nick onthouden voor herstelmelding
-  set %netsplit. $+ $nick 1
-
-
-  ; Niet spammen
+  ; Anti spam
   if (!%netsplit.active) {
     set -u120 %netsplit.active 1
-
-    msg #IRCPlus 🚨 Netsplit gedetecteerd op $server ( $+ $network $+ )
+    msg #IRCPlus 🚨 Netsplit gedetecteerd op $server - $nick ($1-)
   }
 }
 
 
 on *:JOIN:#:{
-  ; Alleen Global-Irc servers
-  if ($server !iswm *.global-irc.eu) return
-
-  ; Alleen #IRCPlus
   if ($chan != #IRCPlus) return
-
 
   if (!$($+(%,netsplit.,$nick),2)) return
 
-
   unset %netsplit. $+ $nick
 
-  msg #IRCPlus ✅ $nick is terug. Mogelijk herstelt de netsplit. ( $+ $server $+ )
+  msg #IRCPlus ✅ $nick is terug. Mogelijk netsplit herstel.
 }
 
 ; Extra commando /showcids om te kijken welke CID je nodig hebt voor je channel output (als je op meerdere netwerken zit)
