@@ -1,0 +1,105 @@
+     _____ _       _           _      _____ _____   _____
+  / ____| |     | |         | |    |_   _|  __ \ / ____|
+ | |  __| | ___ | |__   __ _| |______| | | |__) | |
+ | | |_ | |/ _ \| '_ \ / _` | |______| | |  _  /| |
+ | |__| | | (_) | |_) | (_| | |     _| |_| | \ \| |____
+  \_____|_|\___/|_.__/ \__,_|_|    |_____|_|  \_\\_____
+
+======================================================================
+
+ Bem-vindo à Global-IRC
+
+ Uma rede comunitária para entusiastas do IRC, utilizadores de Linux,
+ programadores, jogadores e amantes da tecnologia de todo o mundo.
+
+======================================================================
+ REGRAS DA REDE
+======================================================================
+
+  • Sem spam
+  • Sem flood
+  • Sem clones
+  • Sem bots DoS
+  • Sem invasão de canais
+  • Respeite os outros utilizadores
+  • Bots amigáveis são permitidos
+  • Máximo de 5 ligações por endereço IP
+
+======================================================================
+ SERVIÇOS IRC
+======================================================================
+
+ Registo de nickname:
+     /msg NickServ HELP
+
+ Gestão de canais:
+     /msg ChanServ HELP
+
+ Comandos úteis:
+
+     /msg NickServ REGISTER
+     /msg NickServ IDENTIFY
+     /msg ChanServ REGISTER #canais
+
+======================================================================
+ INFORMAÇÕES DE LIGAÇÃO
+======================================================================
+
+ Portas IRC padrão     : 6667 - 6669
+ Porta SSL/TLS         : 6697
+
+======================================================================
+ CANAIS EM DESTAQUE
+======================================================================
+
+ #Portal          - Canal principal em Holandês
+ #ChatArea        - Canal principal em Inglês
+ #IRCPlus         - IRC e Redes
+ #Eggdrop         - Desenvolvimento de Bots Eggdrop
+ #Linux           - Linux e Open Source
+ #WolfensteinET   - Wolfenstein: Enemy Territory
+ #Formula1        - Discussão sobre Fórmula 1
+ #DuckHunt        - Jogos IRC
+ #Texas-Holdem    - Poker Texas Hold'em
+ #Walhalla        - Mitologia e Comunidade
+ #IdleRPG         - Aventura Idle RPG
+
+======================================================================
+ AJUDA E SUPORTE
+======================================================================
+
+ Precisa de ajuda?
+
+ Entre em:
+     #Help
+
+ Ver operadores IRC online:
+     /who o-S m
+
+======================================================================
+ EQUIPA DA REDE
+======================================================================
+
+ Administrador do Servidor : Ophidian
+ Administrador do Servidor : Syn0pS1s
+ Administrador do Servidor : Lowerland
+ Administrador do Servidor : Cjefke
+
+ E-mail  : info@global-irc.eu
+ Website : https://www.global-irc.eu
+
+======================================================================
+ AVISO
+======================================================================
+
+ A Global-IRC, a sua equipa e os fornecedores de alojamento
+ não são responsáveis pelo conteúdo transmitido pelos utilizadores.
+
+ O acesso a esta rede é um privilégio e pode ser revogado
+ a qualquer momento pelos administradores da rede.
+
+======================================================================
+
+        Obrigado por escolher a rede Global-IRC
+
+======================================================================
