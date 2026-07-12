@@ -47,14 +47,14 @@ IRCPlus
 │   │
 │   └── Downloads
 │
-├── Bots
-│   ├── Python
-│   │   ├── RSS Bots
-│   │   ├── Information Bots
-│   │   ├── Game Bots
-│   │   └── IRC Utilities
-│   │
-│   └── Other
+├── Python
+│   ├ Python Bots....
+│  
+│   
+│   
+│  
+│   
+│  
 │
 └── Documentation
 ```
