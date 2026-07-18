@@ -1,31 +1,74 @@
-# IRCPlus.nl - mIRC Scripts, Eggdrop TCLs & Python IRC Bots
+# IRCPlus.nl
 
-![Website](https://img.shields.io/badge/Website-IRCPlus.nl-blue)
-![IRC](https://img.shields.io/badge/IRC-irc.IRCPlus.nl-green)
-![mIRC](https://img.shields.io/badge/mIRC-Scripts-orange)
-![Eggdrop](https://img.shields.io/badge/Eggdrop-TCL-purple)
-![Python](https://img.shields.io/badge/Python-Bots-yellow)
+> **Keeping IRC alive with modern scripts, bots and tools.**
 
-Modern and classic IRC tools for mIRC, Eggdrop and Python.
-IRCPlus.nl is an open-source collection of scripts, bots and utilities created for IRC users, channel operators and IRC networks.
-Whether you're running a small IRC network, an Eggdrop bot or simply looking for useful mIRC addons, you'll find a growing collection of projects here.
+![Website](https://img.shields.io/badge/Website-IRCPlus.nl-0078D4?style=for-the-badge)
+![IRC](https://img.shields.io/badge/IRC-irc.IRCPlus.nl-00A65A?style=for-the-badge)
+![mIRC](https://img.shields.io/badge/mIRC-Scripts-FF9800?style=for-the-badge)
+![Eggdrop](https://img.shields.io/badge/Eggdrop-TCL-8E44AD?style=for-the-badge)
+![Python](https://img.shields.io/badge/Python-IRC_Bots-F7DF1E?style=for-the-badge)
+
+---
+
+## 🚀 About
+
+**IRCPlus.nl** is an open-source collection of **mIRC scripts**, **Eggdrop TCL scripts**, **Python IRC bots**, and IRC utilities developed for IRC users, channel operators, bot developers and IRC networks.
+
+The project combines the classic IRC experience with modern automation, monitoring, scripting and network management while keeping everything free and open source.
+
+Whether you're maintaining an IRC network, running an Eggdrop bot, or customizing your mIRC client, IRCPlus provides a growing collection of useful tools.
 
 🌐 **Website:** https://IRCPlus.nl
-💬 **IRC Server:** irc.IRCPlus.nl
 
-## Features
-✔ mIRC Scripts
-✔ Eggdrop TCL Scripts
-✔ Python IRC Bots
-✔ IRC Network Utilities
-✔ Status & Monitoring
-✔ Games & Fun Commands
-✔ Weather & Information Scripts
-✔ Security & Clone Detection
-✔ Open Source
+💬 **IRC Server:** `irc.IRCPlus.nl`
 
-Github Rep:
+---
 
+# ✨ Features
+
+|                        |                                 |
+| :--------------------- | :------------------------------ |
+| 💻 mIRC Scripts        | Dozens of ready-to-use scripts  |
+| 🥚 Eggdrop TCL Scripts | Automation & channel management |
+| 🐍 Python IRC Bots     | Monitoring, APIs & automation   |
+| 🌦 Weather Scripts     | Live weather information        |
+| 📡 Network Monitoring  | IRC & system status             |
+| 🛡 Security Tools      | Clone detection & protection    |
+| 🎮 Games & Fun         | Entertainment commands          |
+| 🌐 DNS & IP Tools      | Lookup utilities                |
+| 🔧 IRC Utilities       | Daily IRC administration        |
+| ❤️ Open Source         | Free to use & improve           |
+
+---
+
+# 📦 Latest Release
+
+## IRCPlus v1.0
+
+The first official public release of IRCPlus.
+
+### Included Features
+
+* 🎵 MP3 Player
+* 💬 Talkers
+* ⚡ Nick Completion
+* 🎨 Colored Nicklist
+* 📡 Custom RAW Handlers
+* 📝 Text Enhancements
+* 🔧 IRC Utilities
+* 🚀 Performance Improvements
+
+**Download**
+
+```
+mIRC/IRCPlus v1.0.zip
+```
+
+---
+
+# 📁 Repository Structure
+
+```text
 IRCPlus
 │
 ├── mIRC
@@ -43,67 +86,115 @@ IRCPlus
 │   └── Future Projects
 │
 └── Documentation
+```
 
-## mIRC Scripts
+---
 
-The mIRC collection contains dozens of scripts designed for everyday IRC usage.
-Current categories include:
+# 💻 mIRC Scripts
 
-- Channel Management
-- Network Monitoring
-- IRC Utilities
-- Weather Information
-- Dutch Holiday Information
-- Birthday Scripts
-- Clone Detection
-- DNS & IP Lookup
-- Fun Commands
-- Games
-- Status Systems
-- Automation
+The repository currently contains a growing collection of mIRC scripts, including:
 
-## Eggdrop TCL Scripts
+* Channel Management
+* Clone Detection
+* Weather Information
+* Dutch Holiday Information
+* Birthday Scripts
+* DNS Lookup
+* IP Information
+* Status Monitoring
+* Network Monitoring
+* IRC Utilities
+* Fun Commands
+* Games
+* Automation
+* AI Integrations
 
-The Eggdrop section contains automation and channel management scripts.
-Examples include:
+---
 
-- NickServ Authentication
-- Status Reporting
-- AI Integrations
-- Channel Utilities
-- Monitoring
-- Automation
+# 🥚 Eggdrop
 
-## Python IRC Bots
+Eggdrop TCL scripts include:
 
-Python projects focus on automation and IRC services.
-Current and future projects include:
+* NickServ Authentication
+* Channel Automation
+* Monitoring
+* Status Reporting
+* AI Integrations
+* Utility Scripts
+* Example Configuration
 
-- Channel List Bots
-- RSS Bots
-- API Bots
-- Monitoring Bots
-- Information Bots
-- AI Integrations
+---
 
-## About IRCPlus.nl
+# 🐍 Python
 
-IRCPlus.nl is a Dutch IRC community dedicated to keeping IRC alive.
-The project combines the classic IRC experience with modern tools, automation and open-source development.
-Our goal is to preserve IRC while making it easier and more enjoyable for both new and experienced users.
+Python projects currently focus on IRC automation.
 
-## Contributing
+### Current Projects
+
+* IRC Bots
+* Channel List Bots
+* Monitoring Bots
+* API Integrations
+
+### Planned
+
+* RSS Bots
+* AI Bots
+* Statistics
+* Network Monitoring
+* Web Integrations
+* IRC Services
+
+---
+
+# 🛣 Roadmap
+
+Upcoming additions include:
+
+* More mIRC Addons
+* More Eggdrop TCL Scripts
+* Additional Python Bots
+* UnrealIRCd Utilities
+* IRCv3 Support
+* Web Dashboard
+* API Improvements
+* Documentation Expansion
+
+---
+
+# 🤝 Contributing
 
 Contributions are always welcome.
-Whether you've created a useful mIRC script, an Eggdrop TCL or a Python IRC bot, feel free to open a Pull Request.
 
-## License
+Feel free to submit:
 
-This repository is intended for learning, sharing and improving IRC software.
+* New mIRC Scripts
+* Eggdrop TCL Scripts
+* Python IRC Bots
+* Bug Fixes
+* Improvements
+* Documentation
+
+Every contribution helps keep IRC alive.
+
+---
+
+# 📜 License
+
+This repository is provided for learning, sharing and improving IRC software.
+
 Please respect original authors and preserve credits where applicable.
 
---
+---
 
-⭐ If you like this project, consider giving it a Star.
+# ⭐ Support
 
-IRCPlus.nl — Keeping IRC alive, one script at a time.
+If you enjoy this project, please consider giving the repository a **Star**.
+
+It helps others discover IRCPlus and supports future development.
+
+---
+
+**IRCPlus.nl**
+
+*Keeping IRC alive — one script at a time.*
