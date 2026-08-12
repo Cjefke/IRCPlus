@@ -1,28 +1,25 @@
 #!/usr/bin/env python3
 
-# DEPENDENCIES:
-#sudo apt update
-#sudo apt install python3-pip
-#playwright install chromium
-#python3 -m pip install playwright
-#pip install playwright irc
-#sudo apt install -y \
-#    libatk1.0-0 \
-#    libatk-bridge2.0-0 \
-#    libcups2 \
-#    libdrm2 \
-#    libxkbcommon0 \
-#    libxcomposite1 \
-#    libxdamage1 \
-#    libxfixes3 \
-#    libxrandr2 \
-#    libgbm1 \
-#    libasound2
-# sudo apt install -y libnspr4 libnss3
-# sudo playwright install-deps chromium 
-# if not found then: python -m playwright install-deps chromium
-# playwright install-deps chromium
-# 
+
+### Installation
+
+#1. Install system packages
+# sudo apt update
+# sudo apt install -y python3 python3-pip python3-venv
+# 2. Create a Python virtual environment
+# python3 -m venv herowars-venv
+# source herowars-venv/bin/activate
+# 3. Install Python dependencies
+# pip install --upgrade pip
+# pip install playwright irc
+# 4. Install Chromium
+# playwright install chromium
+# If Playwright reports missing system libraries, install its required dependencies with:
+# sudo playwright install-deps chromium
+# If the playwright command is not available, use:
+# python -m playwright install-deps chromium
+# You may also need: sudo apt install -y libnspr4 libnss3
+#
 # ============================================================
 # Hero Wars News & Gifts IRC Bot
 # IRCPlus.nl
