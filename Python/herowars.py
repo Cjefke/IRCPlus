@@ -1,5 +1,28 @@
 #!/usr/bin/env python3
 
+# DEPENDENCIES:
+#sudo apt update
+#sudo apt install python3-pip
+#playwright install chromium
+#python3 -m pip install playwright
+#pip install playwright irc
+#sudo apt install -y \
+#    libatk1.0-0 \
+#    libatk-bridge2.0-0 \
+#    libcups2 \
+#    libdrm2 \
+#    libxkbcommon0 \
+#    libxcomposite1 \
+#    libxdamage1 \
+#    libxfixes3 \
+#    libxrandr2 \
+#    libgbm1 \
+#    libasound2
+# sudo apt install -y libnspr4 libnss3
+# sudo playwright install-deps chromium 
+# if not found then: python -m playwright install-deps chromium
+# playwright install-deps chromium
+# 
 # ============================================================
 # Hero Wars News & Gifts IRC Bot
 # IRCPlus.nl
