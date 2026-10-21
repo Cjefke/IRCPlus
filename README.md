@@ -1,4 +1,6 @@
+<p align="center">
 # IRCPlus.nl — The IRC Resource Hub
+</p>
 
 <p align="center">
   <strong>Keeping IRC alive with scripts, bots, tools and community.</strong>
