@@ -1,528 +1,511 @@
-; mIRC MP3 Player v1.0 by Cjefke - Https://IRCPlus.nl
+; =====================================================================
+; IRCPlus MP3 Player - repaired for mIRC 7.84
+; Open with: /mpn | Configure announcement channels in Settings (comma-separated)
+; =====================================================================
 
-alias mpn { if ($dialog(mpnew)) dialog -v mpnew | else dialog -md mpnew mpnew }
-alias mp_mini { if ($dialog(mini_mpnew)) dialog -v mini_mpnew | else dialog -md mini_mpnew mini_mpnew | set %mini_mode 1 }
-alias mp_settings { if ($dialog(settings_mpnew)) dialog -v settings_mpnew | else dialog -md settings_mpnew settings_mpnew }
-alias mp_lyrics { if ($dialog(lyrics_mpnew)) dialog -v lyrics_mpnew | else dialog -md lyrics_mpnew lyrics_mpnew }
+alias mpn {
+  if ($dialog(mpnew)) dialog -v mpnew
+  else dialog -md mpnew mpnew
+}
 
+alias mp_mini {
+  if ($dialog(mini_mpnew)) dialog -v mini_mpnew
+  else dialog -md mini_mpnew mini_mpnew
+}
+
+alias mp_settings {
+  if ($dialog(settings_mpnew)) dialog -v settings_mpnew
+  else dialog -md settings_mpnew settings_mpnew
+}
+
+; ----------------------------- Main dialog ----------------------------
 dialog mpnew {
-  title "IRCPlus MP3 Player v1.2"
-  size -1 -1 300 230
+  title "IRCPlus MP3 Player"
+  size -1 -1 370 270
   option dbu
-
-  ; Playlist
-  box "Playlist",1,5 5 180 110
-  list 2,10 15 170 90,size extsel
-
-  ; Volume
-  box "Volume",12,190 5 35 110
-  scroll "",13,202 15 10 80,range 0 65535
-
-  ; Buttons right
-  button "Close",11,235 15 55 12
-  button "Refresh",21,235 32 55 12
-  button "Mini Mode",34,235 49 55 12
-  button "MP3 Dir",19,235 66 55 12
-  button "Settings",41,235 83 55 12
-
-  ; Play Modes
-  box "Play Modes",28,5 120 95 40
-  check "Random Play",23,12 133 75 10
-  check "Continuous Play",27,12 148 85 10
-
-  ; Now Playing
-  box "Now Playing",30,110 120 180 40
-  text "Nothing playing...",31,118 135 160 10
-  scroll "",4,118 155 160 8,range 0 500
-
-  ; Controls
-  box "Controls",3,5 165 95 45
-  button "Play",5,12 178 35 12
-  button "Stop",6,55 178 35 12
-  button "Previous",25,12 195 35 12
-  button "Next",24,55 195 35 12
-
-  ; Message Settings
-  box "Message Format",14,110 165 180 45
-  edit "Now playing: <song> - Length: <length>",15,118 180 160 22,multi autohs autovs
-
-  text "IRCPlus MP3 Player - Made by Cjefke",26,110 215 180 8,center
+  box "PLAYLIST", 100, 6 6 226 142
+  list 2, 12 18 214 122, size vsbar extsel
+  box "VOLUME", 101, 238 6 42 142
+  scroll "", 13, 252 20 12 112, range 0 65535 vertical
+  button "Choose folder", 19, 286 12 76 16
+  button "Refresh", 21, 286 32 76 16
+  button "Mini player", 34, 286 52 76 16
+  button "Settings", 41, 286 72 76 16
+  button "Close", 11, 286 124 76 16
+  box "NOW PLAYING", 102, 6 154 356 48
+  text "Nothing playing", 31, 14 166 340 12
+  text "00:00 / 00:00", 32, 14 181 90 12
+  scroll "", 4, 110 181 244 10, range 0 1000
+  box "PLAYBACK", 103, 6 207 226 43
+  button "|< Previous", 25, 12 222 52 17
+  button "Play", 5, 70 222 42 17
+  button "Stop", 6, 116 222 42 17
+  button "Next >|", 24, 162 222 62 17
+  check "Random", 23, 240 211 62 12
+  check "Repeat / continue", 27, 240 229 116 12
+  text "IRCPlus MP3 Player  |  by Cjefke", 26, 6 254 356 10, center
 }
 
+; ----------------------------- Mini dialog ----------------------------
 dialog mini_mpnew {
-  title "Mini - MP3 Player"
-  size -1 -1 146 27
+  title "IRCPlus MP3 Mini Player"
+  size -1 -1 250 112
   option dbu
-  list 1, 31 3 82 11, size vsbar
-  button "Play", 2, 114 2 16 12
-  button "Next", 3, 130 2 16 12
-  button "Stop", 4, 17 2 16 12
-  button "Prev", 5, 2 2 15 12
-  button "MP3 Player", 6, 50 16 37 10
+  text "Nothing playing", 10, 6 4 238 12, center
+  button "|<", 5, 6 22 34 17
+  button "Play", 2, 44 22 42 17
+  button "Stop", 4, 90 22 42 17
+  button ">>|", 3, 136 22 38 17
+  button "Full player", 6, 180 22 64 17
+  text "00:00 / 00:00", 11, 6 43 238 12, center
+  list 1, 6 59 238 46, size vsbar
 }
 
+; ----------------------------- Settings -------------------------------
 dialog settings_mpnew {
-  title "MP3 Player - Settings"
-  size -1 -1 136 117
+  title "MP3 Player Settings | Output Presets"
+  size -1 -1 270 278
   option dbu
-  check "Use $tip when playing songs", 1, 4 2 79 10
-  list 2, 2 67 126 32, size vsbar
-  text "Please select which type of format you want used when playing a song.", 3, 2 51 126 15
-  button "Save && Return", 4, 46 102 39 12, flat
-  check "Activate Messages", 5, 4 39 78 10
-  check "Post info online", 6, 4 14 78 10
-  check "Use Ascii Characters", 7, 4 27 61 10
+  box "Playback notifications", 10, 6 6 258 62
+  check "Show mIRC tip when a track starts", 1, 12 18 238 12
+  check "Send track message to allowed channels", 5, 12 34 238 12
+  check "Use ASCII-style text", 7, 12 50 238 12
+  box "Channel allow-list", 9, 6 72 258 56
+  text "Channels to announce in (comma-separated):", 11, 12 82 244 12
+  edit "", 6, 12 96 244 18, autohs
+  text "Example: #IRCPlus,#music  |  Only these joined channels receive messages.", 12, 12 115 244 12
+  text "Message format:", 3, 12 136 100 12
+  edit "Now playing: [SONG] - Length: [LENGTH]", 2, 12 150 244 20, autohs
+  text "Tags: [SONG], [LENGTH], [NICK].", 8, 12 173 244 16
+  box "Old-school output presets", 13, 6 192 258 48
+  combo 14, 12 205 166 90, drop
+  button "Use preset", 15, 184 205 72 17
+  text "Placeholders: [SONG] [LENGTH] [NICK]", 16, 12 226 244 10
+  button "Save && Close", 4, 94 248 82 17
 }
 
-dialog lyrics_mpnew {
-  title "MP3 Player - Lyrics"
-  size -1 -1 236 176
-  option dbu
-  edit "", 1, 2 26 230 148, read multi return autohs autovs
-  text "Lyrics Page using http://www.metrolyrics.com/ for lyrics. Any wrong lyrics or missing lyrics have nothing to do with the actual MP3 Player", 2, 10 4 216 16
+; ----------------------------- Lifecycle ------------------------------
+on *:START: {
+  .timerMPUpdate off
+  .timerMPSeek off
 }
 
-;Dialog Activated.
+on *:UNLOAD: {
+  .timerMPUpdate off
+  .timerMPSeek off
+  splay stop
+  unset %mp.*
+}
+
 on *:dialog:mpnew:init:0: {
-  did -ra mpnew 31 Nothing playing...
-  if (%mp.pause == 1) {
-    did -r mpnew 5
-    did -a mpnew 5 Play
+  did -ra mpnew 31 Nothing playing
+  did -ra mpnew 32 00:00 / 00:00
+  did -c mpnew 4 0
+  if (%mp.rand == on) did -c mpnew 23
+  if (%mp.continue == on) did -c mpnew 27
+  if (!$readini(mp3player.ini,settings,directory)) {
+    if ($isdir($mircdir $+ sounds)) set %mp.dir $mircdir $+ sounds
   }
-  set %mp.format $did(15)
-  if (%mp.rand == On) {
-    did -c mpnew 23
-  }
-  if (%mp.continue == On) {
-    did -c mpnew 27
-  }
-  if ($readini(mp3player.ini,settings,directory)) {
-    set %mp.dir $readini(mp3player.ini,settings,directory)
-  }
-  did -ra mpnew 19 MP3 Dir
-
-  if (%mp.dir != $null) {
-    did -r mpnew 2
-    set %mp.found $findfile(%mp.dir,*.mp3,0,1,did -a mpnew 2 $nopath($1-))
-  }
+  else set %mp.dir $readini(mp3player.ini,settings,directory)
+  if ($readini(mp3player.ini,settings,format)) set %mp.format $readini(mp3player.ini,settings,format)
+  if (%mp.dir) mp_refresh
   did -s mpnew 13 $vol(master)
 }
 
-;Double Clicking on play list
-on *:dialog:mpnew:sclick:2: { set %mp.file $did(2).seltext | set %mp.temp %mp.dir $+ %mp.file | set %mp.bitrate $mp3(%mp.temp).bitrate | set %mp.size $round($calc($lof(%mp.temp) / 1048576),2) }
-on *:dialog:mpnew:dclick:2: { 
-  set %mp.file $did(2).seltext
-  set %mp.temp %mp.dir $+ %mp.file
-  set %mp.bitrate $sound(%mp.temp).bitrate 
-  set %mp.length $mplength 
-  set %mp.size $round($calc($lof(%mp.temp) / 1048576),2) 
-  splay %mp.dir $+ %mp.file
-  set %mp.pause 0 
-  did -r mpnew 5 
-  did -a mpnew 5 Pause 
-  set %mp.format $did(15) 
-  set %mp.chan $active
-  set %mp.chan $active
-  mpmsg
+on *:dialog:mpnew:close:*: {
+  .timerMPSeek off
+  ; Closing the window does not unexpectedly stop the current song.
 }
 
-on *:dialog:mpnew:sclick:41:{
-  $mp_settings
-}
-
-alias 1 { halt | haltdef }
-;Rewind & Fastforward
-on *:dialog:mpnew:scroll:4: { 
-  .timermp3tseek 1 500 splay seek $int($calc(($did(4).sel / 500) * $inmp3.length)) | .timerpos.update -r
-}
-;Play Button
-on *:dialog:mpnew:sclick:5: {
-  if ($did(mpnew,5).text == Play) {
-    set %mp.temp %mp.dir $+ %mp.file
-    splay %mp.temp
-    set %mp.play 1
-    set %mp.pause 0
-    did -r mpnew 5
-    did -a mpnew 5 Pause
-    set %mp.format $did(15)
-    set %mp.length $mplength
-    set %mp.chan $active
-    mpmsg
-  }
-  elseif ($did(mpnew,5).text == Resume) {
-    if (%mp.play == 0) { halt }
-    elseif (%mp.pause == 1) {
-      splay resume
-      set %mp.pause 0
-      did -r mpnew 5
-      did -a mpnew 5 Pause
-    }
-  }
-  elseif ($did(mpnew,5).text == Pause) {
-    if ((%mp.play == 1) && (%mp.pause == 0)) {
-      splay pause
-      set %mp.pause 1
-      did -r mpnew 5
-      did -a mpnew 5 Resume
-    }
-  }
-}
-
-;Stop Button
-on *:dialog:mpnew:sclick:6: { splay stop | set %mp.play 0 | set %mp.pause 0 | did -r mpnew 5 | did -a mpnew 5 Play }
-
-;Close Button
-on *:dialog:mpnew:sclick:11: { if ($input(Do you want the song to stop also?,n,End Song,,) == $true) { $mpclose | dialog -x mpnew mpnew } | else { dialog -x mpnew mpnew } }
-
-;Volume Scroller
-on *:dialog:mpnew:scroll:13: { vol -v $did(13).sel }
-
-;MP3 Dir Button
-on *:dialog:mpnew:sclick:19:{ 
-  var %dir = $sdir="Mp3 directory" c:
-  if (%dir != $null) {
+on *:dialog:mpnew:sclick:19: {
+  var %dir = $sdir(%mp.dir,Choose the folder containing MP3 files)
+  if (%dir) {
     set %mp.dir %dir
     writeini mp3player.ini settings directory %mp.dir
-    did -ra mpnew 19 $nopath(%mp.dir)
-    did -r mpnew 2
-    set %mp.found $findfile(%mp.dir,*.mp3,0,1,did -a mpnew 2 $nopath($1-))
+    mp_refresh
   }
 }
 
-;Randomnize Playing
-on *:dialog:mpnew:sclick:23:{
-  if (%mp.rand == On) {
-    set %mp.rand Off
-    did -u mpnew 23
-  }
-  else {
-    set %mp.rand On
-    did -c mpnew 23
-  }
+on *:dialog:mpnew:sclick:21: mp_refresh
+
+on *:dialog:mpnew:sclick:2: {
+  if ($did(mpnew,2).sel) set %mp.file $did(mpnew,2).seltext
 }
 
-;Next Song Button
-on *:dialog:mpnew:sclick:24:{
-  if (%mp.rand == On) {
-    randplay
-  }
-  else {
-    mp3next
-  }
+on *:dialog:mpnew:dclick:2: {
+  if (!$did(mpnew,2).sel) return
+  set %mp.file $did(mpnew,2).seltext
+  mp_playselected
 }
 
-;Previous Song Button
-on *:dialog:mpnew:sclick:25: { $soundprevious }
-
-;Continuous Play
-on *:dialog:mpnew:sclick:27:{
-  if (%mp.continue == On) {
-    set %mp.continue Off
-    did -u mpnew 27
+on *:dialog:mpnew:sclick:5: {
+  if ($did(mpnew,5).text == Pause) {
+    splay pause
+    set %mp.pause on
+    did -ra mpnew 5 Resume
+    return
   }
-  else {
-    set %mp.continue On
-    did -c mpnew 27
+  if ($did(mpnew,5).text == Resume) {
+    splay resume
+    set %mp.pause off
+    did -ra mpnew 5 Pause
+    return
   }
-}
-
-on *:dialog:mpnew:sclick:21:{
-  if (%mp.dir != $null) {
-    did -r mpnew 2
-    set %mp.found $findfile(%mp.dir, *.mp3,0,1,did -a mpnew 2 $nopath($1-))
+  if (!$did(mpnew,2).sel) {
+    if ($did(mpnew,2).lines < 1) return
+    did -c mpnew 2 1
   }
+  set %mp.file $did(mpnew,2).seltext
+  mp_playselected
 }
 
-;Call the Mini Mode up :)
-on *:dialog:mpnew:sclick:34: { mp_mini | dialog -x mpnew mpnew }
-
-;Menu and its Items
-;Set Directory
-on *:dialog:mpnew:menu:36: { did -r mpnew 2 | set %mp.dir $sdir="Mp3 directory" c: | did -o mpnew 13 1 %mp.dir | set %mp.found $findfile(%mp.dir, *.mp3,0,1,did -a mpnew 2 $nopath($1-)) | did -o mpnew 9 1 %mp.found }
-
-;Exit MP3 Player
-on *:dialog:mpnew:menu:38: { dialog -x mpnew mpnew }
-
-;Launch Mini Mode
-on *:dialog:mpnew:menu:40: { mp_mini | dialog -x mpnew mpnew }
-
-;Launch Setting Window
-on *:dialog:mpnew:menu:41: { mp_settings }
-
-;When MP3 Player Finishes, play new Song
-on *:MP3END: {
-  if (%mp.continue == On) {
-    set %mp.play 1
-
-    if (%mp.rand == On) {
-      randplay
-    }
-    else {
-      mp3next
-    }
-  }
+on *:dialog:mpnew:sclick:6: mp_stop
+on *:dialog:mpnew:sclick:11: {
+  if ($input(Stop playback before closing?,yn,MP3 Player) == $true) mp_stop
+  dialog -x mpnew
+}
+on *:dialog:mpnew:scroll:13: vol -v $did(13).sel
+on *:dialog:mpnew:sclick:23: {
+  if (%mp.rand == on) set %mp.rand off
+  else set %mp.rand on
+}
+on *:dialog:mpnew:sclick:27: {
+  if (%mp.continue == on) set %mp.continue off
+  else set %mp.continue on
+}
+on *:dialog:mpnew:sclick:24: mp3next
+on *:dialog:mpnew:sclick:25: mp3previous
+on *:dialog:mpnew:sclick:34: { mp_mini | dialog -x mpnew }
+on *:dialog:mpnew:sclick:41: mp_settings
+on *:dialog:mpnew:scroll:4: {
+  if (!$inmp3) return
+  if (!$inmp3.length) return
+  .timerMPSeek -m 1 150 splay seek $int($calc(($did(mpnew,4).sel / 1000) * $inmp3.length))
 }
 
-;When MP3 Player Exits, unset some stuff
-on *:dialog:mpnew:close:*: { $mpclose }
-
-;When the script is unloaded, auto unset all variables
-on *:UNLOAD: unset %mp.*
-
-;Now we start the coding for the mini MP3 Player Viewer
-;When the dialog is opened
-on *:dialog:mini_mpnew:init:0: set %mp.found $findfile(%mp.dir, *.mp3,0,1,did -a mini_mpnew 1 $nopath($1-))
-
-;Single Click a Song - Set stuff, don't play although
-on *:dialog:mini_mpnew:sclick:1: {
-  set %mp.file $did(1).seltext 
-  set %mp.temp %mp.dir $+ %mp.file
-  set %mp.bitrate $sound(%mp.temp).bitrate
-  set %mp.size $round($calc($lof(%mp.temp) / 1048576),2)
+; ----------------------------- Mini events ----------------------------
+on *:dialog:mini_mpnew:init:0: {
+  if (%mp.file) did -ra mini_mpnew 10 $remove(%mp.file,.mp3)
+  else did -ra mini_mpnew 10 Nothing playing
+  if (%mp.dir) mp_refreshmini
+  mp_update_display
 }
-;Double click a song - set stuff, play song
-on *:dialog:mini_mpnew:dclick:1: {
-  set %mp.file $did(1).seltext
-  set %mp.temp %mp.dir $+ %mp.file
-  set %mp.bitrate $sound(%mp.temp).bitrate
-  set %mp.length $mplength
-  set %mp.size $round($calc($lof(%mp.temp) / 1048576),2)
-  splay %mp.dir $+ %mp.file
-  set %mp.play 1
-  set %mp.pause 0
-  set %mp.chan $active
-  mpmsg
-}
-
-;Play Song.
 on *:dialog:mini_mpnew:sclick:2: {
-  set %mp.temp %mp.dir $+ %mp.file
-  splay %mp.temp
-  set %mp.play 1
-  set %mp.pause 0
-  set %mp.length $mplength
-  mpmsg
+  if ($did(mini_mpnew,2).text == Pause) {
+    splay pause | set %mp.pause on | did -ra mini_mpnew 2 Resume
+  }
+  elseif ($did(mini_mpnew,2).text == Resume) {
+    splay resume | set %mp.pause off | did -ra mini_mpnew 2 Pause
+  }
+  elseif ($did(mini_mpnew,1).lines > 0) {
+    if (!$did(mini_mpnew,1).sel) did -c mini_mpnew 1 1
+    set %mp.file $did(mini_mpnew,1,$did(mini_mpnew,1).sel)
+    mp_playselected
+  }
+}
+on *:dialog:mini_mpnew:sclick:3: mp3next
+on *:dialog:mini_mpnew:sclick:4: mp_stop
+on *:dialog:mini_mpnew:sclick:5: mp3previous
+on *:dialog:mini_mpnew:sclick:6: { mpn | dialog -x mini_mpnew }
+on *:dialog:mini_mpnew:dclick:1: {
+  if (!$did(mini_mpnew,1).sel) return
+  set %mp.file $did(mini_mpnew,1).seltext
+  mp_playselected
 }
 
-;New Song
-on *:dialog:mini_mpnew:sclick:3: { $soundnext }
-
-;Stop Song
-on *:dialog:mini_mpnew:sclick:4: { splay stop }
-
-;Previous Song
-on *:dialog:mini_mpnew:sclick:5: { $soundprevious }
-
-;Return to Full MP3 Player
-on *:dialog:mini_mpnew:sclick:6: { $mpn | dialog -x mini_mpnew mini_mpnew }
-
+; ----------------------------- Settings events ------------------------
 on *:dialog:settings_mpnew:init:0: {
-  if (%mp.tip == On) { did -c settings_mpnew 1 }
-  if (%mp.msg == On) { did -c settings_mpnew 5 }
-  if (%mp.online == On) { did -c settings_mpnew 6 }
-  if (%mp.ascii == On) { did -c settings_mpnew 7 }
-  var %formats = echo,msg,me,amsg,ame
-  tokenize 44 %formats
-  did -a settings_mpnew 2 $*
-  var %i = $findtok(%formats,%mp.mfor,44)
-  if (%i) {
-    did -c settings_mpnew 2 %i
+  if (%mp.tip == on) did -c settings_mpnew 1
+  if (%mp.msg == on) did -c settings_mpnew 5
+  if (%mp.ascii == on) did -c settings_mpnew 7
+  if (%mp.format == $null) set %mp.format Now playing: [SONG] - Length: [LENGTH]
+  if (!$isfile(mp3player.ini)) noop
+  if (!$readini(mp3player.ini,settings,channels) && %mp.chan) set %mp.channels %mp.chan
+  else set %mp.channels $readini(mp3player.ini,settings,channels)
+  did -ra settings_mpnew 2 %mp.format
+  did -ra settings_mpnew 6 %mp.channels
+  did -a settings_mpnew 14 Classic IRC
+  did -a settings_mpnew 14 Old-school Talker
+  did -a settings_mpnew 14 BBS / ANSI Box
+  did -a settings_mpnew 14 Radio DJ
+  did -a settings_mpnew 14 Minimal
+  did -a settings_mpnew 14 Leetspeak 1337
+  did -a settings_mpnew 14 Leetspeak Elite
+  did -a settings_mpnew 14 Green Terminal
+  did -a settings_mpnew 14 Color Pop
+  did -a settings_mpnew 14 Rainbow-ish
+  did -a settings_mpnew 14 Cyberpunk
+  did -a settings_mpnew 14 Now Spinning
+  did -c settings_mpnew 14 1
+}
+on *:dialog:settings_mpnew:sclick:1: {
+  if ($did(settings_mpnew,1).state) set %mp.tip on
+  else set %mp.tip off
+}
+on *:dialog:settings_mpnew:sclick:5: {
+  if ($did(settings_mpnew,5).state) set %mp.msg on
+  else set %mp.msg off
+}
+on *:dialog:settings_mpnew:sclick:7: {
+  if ($did(settings_mpnew,7).state) set %mp.ascii on
+  else set %mp.ascii off
+}
+on *:dialog:settings_mpnew:sclick:15: {
+  var %preset = $did(settings_mpnew,14).sel
+  if (%preset == 1) set %mp.format Now playing: [SONG] - Length: [LENGTH]
+  elseif (%preset == 2) set %mp.format *** [NICK] is listening to "[SONG]" ([LENGTH])
+  elseif (%preset == 3) set %mp.format $+([-- NOW PLAYING --] ,$chr(124), [SONG] ,$chr(124), [LENGTH])
+  elseif (%preset == 4) set %mp.format [ON AIR] [SONG] - Runtime [LENGTH]
+  elseif (%preset == 5) set %mp.format [SONG] ([LENGTH])
+  elseif (%preset == 6) set %mp.format N0W PL4Y1NG: [SONG] // [LENGTH]
+  elseif (%preset == 7) set %mp.format $+(3L1T3 M0D3: [SONG],$chr(32),$chr(124),$chr(32),[LENGTH])
+  elseif (%preset == 8) set %mp.format $+($chr(3),03,TERMINAL,$chr(3),$chr(32),$chr(124),$chr(32),[SONG],$chr(3),03,$chr(32),$chr(40),[LENGTH],$chr(41))
+  elseif (%preset == 9) set %mp.format $+($chr(3),04,NOW PLAYING,$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),12,[SONG],$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),08,[LENGTH],$chr(3))
+  elseif (%preset == 10) set %mp.format $+($chr(3),04,[ON AIR],$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),07,[SONG],$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),12,[LENGTH],$chr(3))
+  elseif (%preset == 11) set %mp.format $+($chr(3),06,CYBER,$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),10,[SONG],$chr(3),$chr(32),$chr(124),$chr(32),$chr(3),13,[LENGTH],$chr(3))
+  elseif (%preset == 12) set %mp.format $+($chr(3),07,NOW SPINNING,$chr(3),$chr(32),$chr(124),$chr(32),[SONG],$chr(32),$chr(40),[LENGTH],$chr(41))
+  did -ra settings_mpnew 2 %mp.format
+}
+on *:dialog:settings_mpnew:sclick:4: {
+  set %mp.format $did(settings_mpnew,2).text
+  set %mp.channels $remove($did(settings_mpnew,6).text,$chr(32))
+  writeini mp3player.ini settings format %mp.format
+  writeini mp3player.ini settings channels %mp.channels
+  if (%mp.channels) set %mp.chan $gettok(%mp.channels,1,44)
+  dialog -x settings_mpnew
+}
+
+; ----------------------------- Core aliases ---------------------------
+alias mp_refresh {
+  if (!$dialog(mpnew)) return
+  did -r mpnew 2
+  if (%mp.dir && $isdir(%mp.dir)) {
+    noop $findfile(%mp.dir,*.mp3,0,1,did -a mpnew 2 $nopath($1-))
   }
-  else {
-    set %mp.mfor me
-    did -c settings_mpnew 2 3
+  if ($dialog(mini_mpnew)) mp_refreshmini
+}
+
+alias mp_refreshmini {
+  if (!$dialog(mini_mpnew)) return
+  did -r mini_mpnew 1
+  if (%mp.dir && $isdir(%mp.dir)) {
+    noop $findfile(%mp.dir,*.mp3,0,1,did -a mini_mpnew 1 $nopath($1-))
   }
 }
 
-on *:dialog:settings_mpnew:sclick:1: { if (%mp.tip == On) { set %mp.tip Off } | else set %mp.tip On }
-on *:dialog:settings_mpnew:sclick:2: { set %mp.mfor $did(2).seltext }
-on *:dialog:settings_mpnew:sclick:4: { dialog -x settings_mpnew settings_mpnew }
-on *:dialog:settings_mpnew:sclick:5: { if (%mp.msg == On) { set %mp.msg Off } | else { set %mp.msg On } }
-on *:dialog:settings_mpnew:sclick:6: { if (%mp.online == On) { set %mp.online Off } | else { set %mp.online On } }
-on *:dialog:settings_mpnew:sclick:7: { if (%mp.ascii == On) { set %mp.ascii Off } | else { set %mp.ascii On } }
-
-alias mpclose {
-  set %mp.play 0
-  .timermp3Update Off
+alias mp_playselected {
+  if (!%mp.file) return
+  if (!$isfile($+(%mp.dir,$iif($right(%mp.dir,1) != \,\),%mp.file))) {
+    echo -a [MP3 Player] File not found: %mp.file
+    return
+  }
+  set %mp.path $+(%mp.dir,$iif($right(%mp.dir,1) != \,\),%mp.file)
   splay stop
-}
-alias mplength {
-  var %mp.len $int($calc($sound(%mp.temp).length / 1000))
-  var %mp.min $int($calc(%mp.len / 60))
-  var %mp.sec $calc(%mp.len - (%mp.min * 60))
-  if (%mp.min < 10) { set %mp.min 0 $+ %mp.min }
-  if (%mp.sec < 10) { set %mp.sec 0 $+ %mp.sec }
-  set %mp.len %mp.min $+ : $+ %mp.sec
-  return %mp.len
-}
-
-alias F3 { $sounddetermine }
-
-alias mp3determine {
-  if (%mp.rand == On) {
-    randplay
+  splay $qt(%mp.path)
+  set %mp.play on
+  set %mp.pause off
+  set %mp.started $ctime
+  ; Remember the channel if playback was started from a channel window.
+  if ($chan($active)) set %mp.chan $active
+  did -ra mpnew 31 $remove(%mp.file,.mp3)
+  did -ra mpnew 5 Pause
+  if ($dialog(mini_mpnew)) {
+    did -ra mini_mpnew 10 $remove(%mp.file,.mp3)
+    did -ra mini_mpnew 2 Pause
   }
-  else {
-    mp3next
-  }
-}
-
-alias randplay {
-  if (!$dialog(mpnew)) { halt }
-
-  var %total $did(mpnew,2).lines
-  if (%total == 0) { halt }
-
-  var %random $rand(1,%total)
-
-  set %mp.file $did(mpnew,2,%random).text
-  set %mp.temp %mp.dir $+ %mp.file
-
-  splay %mp.temp
-
-  did -c mpnew 2 %random
-
-  set %mp.play 1
-  set %mp.pause 0
-  set %mp.length $mplength
-
-  did -r mpnew 5
-  did -a mpnew 5 Pause
-  set %mp.chan $active
-
+  .timerMPUpdate off
+  .timerMPUpdate 0 1 mp3update
   mpmsg
+  mp_update_display
 }
 
-alias mp3next {
-  if (%mp.play == 0) { halt }
-  if (%mp.play == 1) {
-    if (($dialog(mpnew)) && (!$dialog(mini_mpnew))) {
-      var %line $did(mpnew,2).sel
-      if (!%line) { set %line 1 }
-      if (%line >= $did(mpnew,2).lines) {
-        set %line 0
-      }
-      inc %line
-      splay $+(%mp.dir,$did(mpnew,2,%line))
-      did -c mpnew 2 %line
-      set %mp.file $did(mpnew,2,%line)
-      did -r mpnew 5
-      did -a mpnew 5 Pause
-      set %mp.format $did(mpnew,15)
-    }
-    set %mp.play 1
-    set %mp.pause 0
-    set %mp.length $mplength
-    mpmsg
-  }
-}
-
-alias mp3previous {
-  if (%mp.play == 0) { halt }
-  elseif (%mp.play == 1) {
-    if (($dialog(mpnew)) && (!$dialog(mini_mpnew))) {
-      var %line $did(mpnew,2).sel
-      splay $+(%mp.dir,$did(mpnew,2, $calc(%line - 1)))
-      did -c mpnew 2 $calc(%line - 1)
-      set %mp.file $did(mpnew,2, $calc(%line - 1))
-      did -r mpnew 5
-      did -a mpnew 5 Pause
-      set %mp.format $did(mpnew,15)
-    }
-    elseif ((!$dialog(mpnew)) && ($dialog(mini_mpnew))) {
-      var %line $did(mini_mpnew,1).sel
-      splay $+(%mp.dir,$did(mini_mpnew,1, $calc(%line - 1)))
-      did -c mini_mpnew 1 $calc(%line - 1)
-      set %mp.file $did(mini_mpnew,1, $calc(%line - 1))
-    }
-    set %mp.play 1
-    set %mp.pause 0
-    set %mp.length $mplength
-    mpmsg
-  }
-}
-
-alias mp3shuffle {
-  if (%mp.play == 0) { halt }
-  elseif (%mp.play == 1) {
-    if ($dialog(mpnew)) {
-      var %line $did(mpnew,2).sel
-      splay $+(%mp.dir,$did(mpnew,2, $calc(%line + 1)))
-      did -c mpnew 2 $calc(%line + 1)
-      set %mp.file $did(mpnew,2, $calc(%line + 1))
-      did -r mpnew 5
-      did -a mpnew 5 Pause
-      set %mp.format $did(mpnew,15)
-    }
-    elseif ($dialog(mini_mpnew)) {
-      var %line $did(mini_mpnew,1).sel
-      splay $+(%mp.dir,$did(mini_mpnew,1, $calc(%line + 1)))
-      did -c mini_mpnew 1 $calc(%line + 1)
-      set %mp.file $did(mini_mpnew,1, $calc(%line + 1))
-    }
-    set %mp.play 1
-    set %mp.pause 0
-    set %mp.length $mplength
-    mpmsg
+alias mp_stop {
+  .timerMPUpdate off
+  .timerMPSeek off
+  splay stop
+  set %mp.play off
+  set %mp.pause off
+  did -ra mpnew 31 Nothing playing
+  did -ra mpnew 32 00:00 / 00:00
+  did -c mpnew 4 0
+  did -ra mpnew 5 Play
+  if ($dialog(mini_mpnew)) {
+    did -ra mini_mpnew 10 Nothing playing
+    did -ra mini_mpnew 11 00:00 / 00:00
+    did -ra mini_mpnew 2 Play
   }
 }
 
 alias mp3update {
+  if (%mp.play != on) { .timerMPUpdate off | return }
+  if (!$inmp3) {
+    ; SPLAY may report a brief gap while changing tracks; do not reset the display here.
+    return
+  }
+  var %len = $inmp3.length
+  var %pos = $inmp3.pos
+  if (%len !isnum 1-) return
+  if (%pos !isnum 0-) %pos = 0
+  var %pct = $int($calc((%pos / %len) * 1000))
+  if (%pct < 0) %pct = 0
+  if (%pct > 1000) %pct = 1000
+  var %cursec = $int($calc(%pos / 1000))
+  var %totsec = $int($calc(%len / 1000))
+  var %cur = $+( $base($int($calc(%cursec / 60)),10,10,2),:,$base($calc(%cursec % 60),10,10,2))
+  var %tot = $+( $base($int($calc(%totsec / 60)),10,10,2),:,$base($calc(%totsec % 60),10,10,2))
   if ($dialog(mpnew)) {
-    if (%mp.play == 1) {
-      if ($inmp3.length) {
-        did -c mpnew 4 $calc(($inmp3.pos / $inmp3.length) * 500)
-      }
-    }
-    else {
-      .timermp3Update off
-    }
+    did -ra mpnew 32 $+(%cur, / ,%tot)
+    did -c mpnew 4 %pct
+  }
+  if ($dialog(mini_mpnew)) did -ra mini_mpnew 11 $+(%cur, / ,%tot)
+}
+
+alias mp_update_display {
+  if ($inmp3) mp3update
+}
+
+alias mp3next {
+  var %total = 0
+  var %line = 0
+  if ($dialog(mpnew)) {
+    %total = $did(mpnew,2).lines
+    %line = $did(mpnew,2).sel
+  }
+  elseif ($dialog(mini_mpnew)) {
+    %total = $did(mini_mpnew,1).lines
+    %line = $did(mini_mpnew,1).sel
+  }
+  else return
+  if (%total < 1) return
+  if (%mp.rand == on) { mp_randplay | return }
+  if (%line !isnum 1-) %line = 0
+  inc %line
+  if (%line > %total) %line = 1
+  if ($dialog(mpnew)) {
+    did -c mpnew 2 %line
+    set %mp.file $did(mpnew,2,%line)
   }
   else {
-    .timermp3Update off
+    did -c mini_mpnew 1 %line
+    set %mp.file $did(mini_mpnew,1,%line)
   }
+  mp_playselected
+}
+
+alias mp3previous {
+  var %total = 0
+  var %line = 0
+  if ($dialog(mpnew)) {
+    %total = $did(mpnew,2).lines
+    %line = $did(mpnew,2).sel
+  }
+  elseif ($dialog(mini_mpnew)) {
+    %total = $did(mini_mpnew,1).lines
+    %line = $did(mini_mpnew,1).sel
+  }
+  else return
+  if (%total < 1) return
+  if (%line !isnum 1-) %line = 1
+  dec %line
+  if (%line < 1) %line = %total
+  if ($dialog(mpnew)) {
+    did -c mpnew 2 %line
+    set %mp.file $did(mpnew,2,%line)
+  }
+  else {
+    did -c mini_mpnew 1 %line
+    set %mp.file $did(mini_mpnew,1,%line)
+  }
+  mp_playselected
+}
+
+alias mp_randplay {
+  var %total = 0
+  if ($dialog(mpnew)) %total = $did(mpnew,2).lines
+  elseif ($dialog(mini_mpnew)) %total = $did(mini_mpnew,1).lines
+  if (%total < 1) return
+  var %line = $rand(1,%total)
+  if ($dialog(mpnew)) {
+    did -c mpnew 2 %line
+    set %mp.file $did(mpnew,2,%line)
+  }
+  else {
+    did -c mini_mpnew 1 %line
+    set %mp.file $did(mini_mpnew,1,%line)
+  }
+  mp_playselected
+}
+
+alias mpchannel {
+  if (!$1) {
+    echo -a [MP3 Player] Usage: /mpchannel #channel
+    echo -a [MP3 Player] Current target: $iif(%mp.chan,%mp.chan,not set)
+    return
+  }
+  if (!$chan($1)) {
+    echo -a [MP3 Player] You must be joined to $1 first.
+    return
+  }
+  set %mp.chan $1
+  echo -a [MP3 Player] Track announcements will be sent to %mp.chan
 }
 
 alias mpmsg {
-  if (%mp.online == On) { $soundwrite_online }
-  if (!$dialog(mini_mpnew)) { .timermp3Update -o 1 10 mp3update }
-  if (%mp.mfor == $null) { echo -a Please select which type of format you want to use | mp_settings }
-  else {
-    if (%mp.format != $null) {
-      set %mp.song $remove(%mp.file,.mp3)
-      did -ra mpnew 31 $replace(%mp.file,.mp3,)
-      set %mp.song $replace(%mp.format,<song>,%mp.song,<length>,%mp.length)
-      if (%mp.ascii == On) { set %mp.song $replacecs(%mp.song,a,?,A,?,b,?,B,?,c,?,C,?,d,?,D,?,e,?,E,?,f,?,F,?,i,?,I,?,l,?,L,?,n,?,N,?,o,?,O,?,p,?,P,?,q,?,Q,?,r,?,R,?,s,?,S,?,u,?,U,?,x,?,X,?,y,?,Y,?,!,?,?,?,>,?,<,?,2,?,3,?,half,?,fourth,?,/,?,.,?,ae,?,tm,?,TM,?) }
-      if (%mp.msg == On) {
-        if (%mp.mfor == echo) { echo %mp.chan %mp.song }
-        elseif (%mp.mfor == say) { msg %mp.chan %mp.song }
-        elseif (%mp.mfor == me) { 
-          .describe %mp.chan %mp.song
-          echo -t %mp.chan $IRCPlus.FormatAction(%mp.chan,$me,%mp.song)
+  if (%mp.msg != on && %mp.tip != on) return
+  if (%mp.format == $null) set %mp.format Now playing: [SONG] - Length: [LENGTH]
+  var %song = $remove(%mp.file,.mp3)
+  var %length = $mplength(%mp.path)
+  var %msg = $replace(%mp.format,[SONG],%song,[LENGTH],%length,[NICK],$me)
+  if (%mp.ascii == on) %msg = $replacecs(%msg,a,4,A,4,e,3,E,3,i,1,I,1,o,0,O,0,s,5,S,5,t,7,T,7)
+  if (%mp.msg == on) {
+    var %i = 1
+    var %sent = 0
+    var %total = $numtok(%mp.channels,44)
+    while (%i <= %total) {
+      var %target = $gettok(%mp.channels,%i,44)
+      if (%target != $null) {
+        if ($left(%target,1) != $chr(35)) && ($left(%target,1) != &) {
+          echo -a [MP3 Player] Skipping invalid channel name: %target
         }
-        elseif (%mp.mfor == amsg) { amsg %mp.song }
-        elseif (%mp.mfor == ame) { ame %mp.song }
+        elseif ($chan(%target)) {
+          msg %target %msg
+          inc %sent
+        }
       }
+      inc %i
     }
-    else {
-      set %mp.song $remove(%mp.file,.mp3)
-      set %mp.song $replace(%mp.format,<song>,%mp.song,<length>,%mp.length)
-      if (%mp.ascii == On) { set %mp.song $replacecs(%mp.song,a,?,A,?,b,?,B,?,c,?,C,?,d,?,D,?,e,?,E,?,f,?,F,?,i,?,I,?,l,?,L,?,n,?,N,?,o,?,O,?,p,?,P,?,q,?,Q,?,r,?,R,?,s,?,S,?,u,?,U,?,x,?,X,?,y,?,Y,?,!,?,?,?,>,?,<,?,2,?,3,?,half,?,fourth,?,/,?,.,?,ae,?,tm,?,TM,?) }
-      if (%mp.mfor == echo) { echo %mp.chan %mp.song }
-      elseif (%mp.mfor == say) { msg %mp.chan %mp.song }
-      elseif (%mp.mfor == me) { 
-        .describe %mp.chan %mp.song
-        echo -t %mp.chan $IRCPlus.FormatAction(%mp.chan,$me,%mp.song)
-      }
-      elseif (%mp.mfor == amsg) { amsg %mp.song }
-      elseif (%mp.mfor == ame) { ame %mp.song }
-    }
+    if (%sent == 0) echo -a [MP3 Player] No allowed channels are joined. Set the channel allow-list in MP3 Player > Settings.
   }
-  if (%mp.tip == On) { $tip(IRCPlus MP3 Player,IRCPlus MP3 Player,$replace(%mp.format,<song>,$remove(%mp.file,.mp3),<length>,%mp.length),5,,,,) }
+  if (%mp.tip == on) noop $tip(IRCPlus MP3 Player,Now Playing,%msg,4)
+}
+
+alias mplength {
+  var %file = $iif($1-,$1-,%mp.path)
+  if (!$isfile(%file)) return 00:00
+  var %ms = $sound(%file).length
+  if (%ms !isnum 1-) return 00:00
+  var %sec = $int($calc(%ms / 1000))
+  return $+( $base($int($calc(%sec / 60)),10,10,2),:,$base($calc(%sec % 60),10,10,2))
+}
+
+on *:MP3END: {
+  set %mp.play off
+  .timerMPUpdate off
+  if (%mp.continue == on) {
+    if (%mp.rand == on) mp_randplay
+    else mp3next
+  }
+  else {
+    if ($dialog(mpnew)) did -ra mpnew 5 Play
+    if ($dialog(mini_mpnew)) did -ra mini_mpnew 2 Play
+  }
 }
 
 menu channel,menubar {
   -
-  MP3 Player:/mpn
+  MP3 Player
+  .Open:/mpn
+  .Mini player:/mp_mini
+  .Settings:/mp_settings
   -
 }
