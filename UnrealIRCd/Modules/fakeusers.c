@@ -243,10 +243,12 @@ static Client *create_one_fake_user(void)
 	char nick[NICKLEN + 1];
 	char ident[USERLEN + 1];
 	char realname[REALLEN + 1];
-	char ip[64];
+	char ipstr[64];
 	char host[HOSTLEN + 1];
 	int tries = 0;
+	const char *id;
 
+	/* Find a free nick */
 	do {
 		make_realistic_nick(nick, sizeof(nick));
 		if (++tries > 50)
@@ -254,46 +256,55 @@ static Client *create_one_fake_user(void)
 	} while (find_client(nick, NULL) != NULL);
 
 	make_realistic_realname(realname, sizeof(realname));
-	make_random_ip(ip, sizeof(ip));
+	make_random_ip(ipstr, sizeof(ipstr));
 	make_ident(ident, sizeof(ident), nick);
 
-	snprintf(host, sizeof(host), "dynamic-%s.isp.example.net", ip);
-	for (char *p = host; *p; p++)
-		if (*p == '.')
-			;
-		else if (!isalnum(*p) && *p != '-')
-			*p = '-';
+	/* Keep hostname short enough for HOSTLEN (63) */
+	snprintf(host, sizeof(host), "dyn-%s.example.net", ipstr);
 
+	/* Create as a remote client (from != NULL => no local struct) */
 	client = make_client(&me, &me);
 	if (!client)
 		return NULL;
 
+	/* Identity */
 	strlcpy(client->name, nick, sizeof(client->name));
 	strlcpy(client->ident, ident, sizeof(client->ident));
 	strlcpy(client->info, realname, sizeof(client->info));
 
+	/* Allocate User struct */
 	make_user(client);
+	if (!client->user)
+	{
+		free_client(client);
+		return NULL;
+	}
+
 	strlcpy(client->user->username, ident, sizeof(client->user->username));
 	strlcpy(client->user->realhost, host, sizeof(client->user->realhost));
 	strlcpy(client->user->cloakedhost, host, sizeof(client->user->cloakedhost));
+	if (!client->user->virthost)
+		safe_strdup(client->user->virthost, host);
 
-	set_sockhost(client, host);
-	set_client_ip(client, ip);
+	/* IP - set directly, do NOT call set_client_ip/set_sockhost (those need local) */
+	safe_strdup(client->ip, ipstr);
+	if (inet_pton(AF_INET, ipstr, client->rawip) <= 0)
+		memset(client->rawip, 0, sizeof(client->rawip));
 
+	/* Status */
 	client->status = CLIENT_STATUS_USER;
 	client->umodes = 0;
 	client->lastnick = TStime();
 	client->direction = &me;
 	client->uplink = &me;
 
-	{
-		const char *id;
-		while (hash_find_id((id = uid_get()), NULL) != NULL)
-			;
-		strlcpy(client->id, id, sizeof(client->id));
-		add_to_id_hash_table(client->id, client);
-	}
+	/* UID */
+	while (hash_find_id((id = uid_get()), NULL) != NULL)
+		;
+	strlcpy(client->id, id, sizeof(client->id));
+	add_to_id_hash_table(client->id, client);
 
+	/* Lists / hashes */
 	add_client_to_list(client);
 	add_to_client_hash_table(client->name, client);
 
@@ -304,7 +315,7 @@ static Client *create_one_fake_user(void)
 	RunHook(HOOKTYPE_REMOTE_CONNECT, client);
 
 	unreal_log(ULOG_INFO, "connect", "REMOTE_CLIENT_CONNECT", client,
-	           "Client connecting (fake): $client ($client.user.username@$client.hostname) [$client.ip] $client.details",
+	           "Client connecting (fake): $client ($client.user.username@$client.hostname) [$client.ip]",
 	           log_data_string("details", client->info));
 
 	return client;
