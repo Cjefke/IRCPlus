@@ -3,7 +3,7 @@
  *
  * Creates large numbers of realistic-looking fake users so you can
  * stress-test your UnrealIRCd, SNOTICE handling, channel bots and
- * gatekeeper scripts (like the mIRC usertracker you showed).
+ * gatekeeper scripts.
  *
  * Commands (IRC operators only):
  *   FAKEUSERS <count> [joinchance]
@@ -16,24 +16,13 @@
  *   FAKEUSERS STATUS
  *       Show how many fake users are currently online.
  *
- * The users look realistic:
- *   - Common first/last name combinations + numbers
- *   - Believable realnames
- *   - Random public IPv4 addresses
- *   - Sensible idents
- *
- * They are introduced as remote users (uplink = &me) so they do not
- * consume local class slots or file descriptors, but they still appear
- * in /LUSERS, /WHO, channels and most hooks/SNOTICEs.
- *
  * (C) 2026 - for IRCPlus load testing
  */
 
 #include "unrealircd.h"
 
-#define MYNAME "third/fakeusers"
 #define MAX_FAKEUSERS 25000
-#define BATCH_SIZE 50          /* create this many per event tick to avoid lag */
+#define BATCH_SIZE 50
 
 ModuleHeader MOD_HEADER = {
 	"third/fakeusers",
@@ -43,15 +32,11 @@ ModuleHeader MOD_HEADER = {
 	"unrealircd-6",
 };
 
-/* We tag every fake client with this moddata so we can find & clean them later */
+static Module *fakeusers_module = NULL;
 static ModDataInfo *md_fake = NULL;
-
-/* Generation state for batched creation */
 static int gen_remaining = 0;
 static int gen_joinchance = 15;
 static Event *gen_event = NULL;
-
-/* ---------- Realistic name data ---------- */
 
 static const char *first_names[] = {
 	"James","John","Robert","Michael","William","David","Richard","Joseph","Thomas","Charles",
@@ -96,8 +81,6 @@ static const char *ident_bases[] = {
 	NULL
 };
 
-/* ---------- Helpers ---------- */
-
 static int is_fake_client(Client *client)
 {
 	if (!client || !IsUser(client))
@@ -120,7 +103,6 @@ static const char *pick(const char **list)
 	return list[getrandom8() % n];
 }
 
-/* Generate a realistic nick: Firstname + optional digits / underscore + last initial etc. */
 static void make_realistic_nick(char *buf, size_t buflen)
 {
 	const char *first = pick(first_names);
@@ -130,52 +112,50 @@ static void make_realistic_nick(char *buf, size_t buflen)
 
 	switch (style)
 	{
-		case 0:  /* John */
+		case 0:
 			strlcpy(tmp, first, sizeof(tmp));
 			break;
-		case 1:  /* John23 */
+		case 1:
 			snprintf(tmp, sizeof(tmp), "%s%d", first, 1 + (getrandom8() % 99));
 			break;
-		case 2:  /* John_Smith */
+		case 2:
 			snprintf(tmp, sizeof(tmp), "%s_%s", first, last);
 			break;
-		case 3:  /* JohnS */
+		case 3:
 			snprintf(tmp, sizeof(tmp), "%s%c", first, last[0]);
 			break;
-		case 4:  /* JSmith */
+		case 4:
 			snprintf(tmp, sizeof(tmp), "%c%s", first[0], last);
 			break;
-		case 5:  /* johnsmith */
+		case 5:
 			snprintf(tmp, sizeof(tmp), "%s%s", first, last);
 			for (char *p = tmp; *p; p++)
 				*p = tolower(*p);
 			break;
-		case 6:  /* Johnny */
+		case 6:
 			snprintf(tmp, sizeof(tmp), "%sy", first);
 			break;
-		case 7:  /* John1987 */
+		case 7:
 			snprintf(tmp, sizeof(tmp), "%s%d", first, 1970 + (getrandom8() % 40));
 			break;
-		case 8:  /* xJohnx */
+		case 8:
 			snprintf(tmp, sizeof(tmp), "x%sx", first);
 			break;
-		case 9:  /* TheJohn */
+		case 9:
 			snprintf(tmp, sizeof(tmp), "The%s", first);
 			break;
-		case 10: /* John|UK or similar */
+		case 10:
 			snprintf(tmp, sizeof(tmp), "%s|%c%c", first,
 			         'A' + (getrandom8() % 26), 'A' + (getrandom8() % 26));
 			break;
-		default: /* First + 3 digits */
+		default:
 			snprintf(tmp, sizeof(tmp), "%s%03d", first, getrandom8() % 1000);
 			break;
 	}
 
-	/* Ensure it fits and is a valid nick */
 	strlcpy(buf, tmp, buflen);
 	buf[NICKLEN] = '\0';
 
-	/* Very basic cleanup - replace invalid chars */
 	for (char *p = buf; *p; p++)
 	{
 		if (!isalnum(*p) && *p != '_' && *p != '-' && *p != '|' && *p != '[' && *p != ']')
@@ -216,17 +196,15 @@ static void make_realistic_realname(char *buf, size_t buflen)
 
 static void make_random_ip(char *buf, size_t buflen)
 {
-	/* Public IPv4 ranges only (roughly avoid private/reserved) */
 	unsigned int a, b, c, d;
 	do {
-		a = 1 + (getrandom8() % 223);   /* 1-223 */
+		a = 1 + (getrandom8() % 223);
 	} while (a == 10 || a == 127 || (a >= 224));
 
 	b = getrandom8() % 256;
 	c = getrandom8() % 256;
 	d = 1 + (getrandom8() % 254);
 
-	/* Extra filter for 172.16/12 and 192.168/16 */
 	if (a == 172 && b >= 16 && b <= 31)
 		b = 32 + (getrandom8() % 200);
 	if (a == 192 && b == 168)
@@ -259,8 +237,6 @@ static void make_ident(char *buf, size_t buflen, const char *nick)
 	buf[USERLEN] = '\0';
 }
 
-/* ---------- Core: create one fake user ---------- */
-
 static Client *create_one_fake_user(void)
 {
 	Client *client;
@@ -271,7 +247,6 @@ static Client *create_one_fake_user(void)
 	char host[HOSTLEN + 1];
 	int tries = 0;
 
-	/* Find a free nick */
 	do {
 		make_realistic_nick(nick, sizeof(nick));
 		if (++tries > 50)
@@ -282,42 +257,35 @@ static Client *create_one_fake_user(void)
 	make_random_ip(ip, sizeof(ip));
 	make_ident(ident, sizeof(ident), nick);
 
-	/* Simple reverse-style hostname */
 	snprintf(host, sizeof(host), "dynamic-%s.isp.example.net", ip);
 	for (char *p = host; *p; p++)
 		if (*p == '.')
-			; /* keep */
+			;
 		else if (!isalnum(*p) && *p != '-')
 			*p = '-';
 
-	/* Create as a remote client attached to us */
 	client = make_client(&me, &me);
 	if (!client)
 		return NULL;
 
-	/* Basic identity */
 	strlcpy(client->name, nick, sizeof(client->name));
 	strlcpy(client->ident, ident, sizeof(client->ident));
 	strlcpy(client->info, realname, sizeof(client->info));
 
-	/* Make it a full user */
 	make_user(client);
 	strlcpy(client->user->username, ident, sizeof(client->user->username));
 	strlcpy(client->user->realhost, host, sizeof(client->user->realhost));
 	strlcpy(client->user->cloakedhost, host, sizeof(client->user->cloakedhost));
 
-	/* Hostname + IP */
 	set_sockhost(client, host);
 	set_client_ip(client, ip);
 
-	/* Status + flags */
 	client->status = CLIENT_STATUS_USER;
 	client->umodes = 0;
 	client->lastnick = TStime();
 	client->direction = &me;
 	client->uplink = &me;
 
-	/* UID */
 	{
 		const char *id;
 		while (hash_find_id((id = uid_get()), NULL) != NULL)
@@ -326,21 +294,15 @@ static Client *create_one_fake_user(void)
 		add_to_id_hash_table(client->id, client);
 	}
 
-	/* Add to global lists / hashes */
 	add_client_to_list(client);
 	add_to_client_hash_table(client->name, client);
 
-	/* Update global counters so /LUSERS looks correct */
 	irccounts.clients++;
-	/* Note: we deliberately do NOT increment me_clients because these are remote-style */
 
-	/* Mark as ours */
 	mark_fake(client);
 
-	/* Fire remote connect hook so modules / snomasks can see it */
 	RunHook(HOOKTYPE_REMOTE_CONNECT, client);
 
-	/* Log similar to normal remote connects (shows up in snomasks / your tracker) */
 	unreal_log(ULOG_INFO, "connect", "REMOTE_CLIENT_CONNECT", client,
 	           "Client connecting (fake): $client ($client.user.username@$client.hostname) [$client.ip] $client.details",
 	           log_data_string("details", client->info));
@@ -348,7 +310,6 @@ static Client *create_one_fake_user(void)
 	return client;
 }
 
-/* Randomly join some existing channels */
 static void maybe_join_channels(Client *client, int joinchance)
 {
 	Channel *channel;
@@ -357,7 +318,6 @@ static void maybe_join_channels(Client *client, int joinchance)
 	if (joinchance <= 0 || getrandom8() % 100 >= joinchance)
 		return;
 
-	/* Walk existing channels and join up to 1-3 of them */
 	for (channel = channels; channel; channel = channel->nextch)
 	{
 		if (IsMember(client, channel))
@@ -365,7 +325,6 @@ static void maybe_join_channels(Client *client, int joinchance)
 		if (getrandom8() % 100 > 35)
 			continue;
 
-		/* Simple join - no key/ban checks for load-test fakes */
 		join_channel(channel, client, NULL, "");
 		joined++;
 		if (joined >= 1 + (getrandom8() % 3))
@@ -373,12 +332,9 @@ static void maybe_join_channels(Client *client, int joinchance)
 	}
 }
 
-/* ---------- Batched creation (prevents lag spikes) ---------- */
-
 static void fakeusers_batch(void *arg)
 {
 	int i;
-	int created = 0;
 
 	if (gen_remaining <= 0)
 	{
@@ -396,12 +352,10 @@ static void fakeusers_batch(void *arg)
 		if (acptr)
 		{
 			maybe_join_channels(acptr, gen_joinchance);
-			created++;
 			gen_remaining--;
 		}
 		else
 		{
-			/* nick collision storm or memory - stop */
 			gen_remaining = 0;
 			break;
 		}
@@ -411,11 +365,8 @@ static void fakeusers_batch(void *arg)
 	{
 		EventDel(gen_event);
 		gen_event = NULL;
-		sendto_ops(NULL, "FAKEUSERS: finished creating users");
 	}
 }
-
-/* ---------- Commands ---------- */
 
 CMD_FUNC(cmd_fakeusers)
 {
@@ -492,7 +443,6 @@ CMD_FUNC(cmd_fakeusers)
 			joinchance = 100;
 	}
 
-	/* If a previous generation is still running, cancel it */
 	if (gen_event)
 	{
 		EventDel(gen_event);
@@ -502,25 +452,21 @@ CMD_FUNC(cmd_fakeusers)
 	gen_remaining = count;
 	gen_joinchance = joinchance;
 
-	/* Start batched creation */
-	gen_event = EventAdd(modinfo->handle, "fakeusers_batch", fakeusers_batch, NULL, 100, 0);
+	gen_event = EventAdd(fakeusers_module, "fakeusers_batch", fakeusers_batch, NULL, 100, 0);
 
 	sendnotice(client, "FAKEUSERS: starting creation of %d users (joinchance %d%%). This is done in batches to avoid lag.",
 	           count, joinchance);
-	sendto_ops(NULL, "FAKEUSERS: %s is creating %d fake users for load testing",
-	           client->name, count);
 }
-
-/* ---------- Module lifecycle ---------- */
 
 static void free_fake_md(ModData *m)
 {
-	/* nothing dynamic */
 }
 
 MOD_INIT()
 {
 	ModDataInfo mreq;
+
+	fakeusers_module = modinfo->handle;
 
 	MARK_AS_OFFICIAL_MODULE(modinfo);
 
@@ -547,7 +493,6 @@ MOD_LOAD()
 
 MOD_UNLOAD()
 {
-	/* Best effort cleanup */
 	Client *acptr, *next;
 	list_for_each_entry_safe(acptr, next, &client_list, client_node)
 	{
